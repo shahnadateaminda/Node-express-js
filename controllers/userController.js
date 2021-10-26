@@ -6,6 +6,11 @@ const bcrypt = require('bcrypt');
 // login post
 exports.login = (req, res, next) => {
     const { email, password } = req.body
+    // bcrypt.compare(password, users.password).then((res)=>{
+
+    // }).catch((err)=>{
+        
+    // })
     const user = new userModel({ email, password })
     user.loginValidate({ email, password }).then(([rows, fieldData]) => {
         if (rows?.length) {
