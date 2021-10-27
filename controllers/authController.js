@@ -15,10 +15,8 @@ exports.login = (req, res, next) => {
             bcrypt.compare(password, userData.password)
                 .then((respose) => {
                     if (respose) {
-                        const token = jwt.sign({ email }, 'my_secret_key');
-                        res.setHeader("Set-Cookie", token)
+                        const token = jwt.sign({ email }, 'my_secret_key', { expiresIn: '9h' })
                         res.status(200).send({ data: userData, message: 'Logged In Successfully', status: 200, token });
-
                     } else {
                         res.status(404).send({ error: 'Invalid Password' })
                     }
@@ -46,12 +44,7 @@ exports.signUp = (req, res, next) => {
             return bcrypt.hash(password, 12).then((hash) => {
                 auth.userSignUp({ email, password: hash, gender }).then(([rows, fieldData]) => {
                     res.status(200).send({
-                        message: 'User Created Successfully !', data: {
-                            email,
-                            hash,
-                            gender
-                        },
-                        status: 200
+                        message: 'User Created Successfully !', data: { email, password: hash, gender }, status: 200
                     })
                 }).catch((error) => {
                     res.status(500).send({ error: error, status: 500 })
@@ -67,5 +60,5 @@ exports.signUp = (req, res, next) => {
 }
 
 exports.logout = (req, res, next) => {
-
+    res.status(200).send({ message: 'Logged Out Successfully !', status: 200 })
 }
