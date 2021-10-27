@@ -6,12 +6,6 @@ module.exports = class userModel {
     constructor() {
     }
 
-    // validate login
-    loginValidate(data) {
-        const { email, password } = data
-        const query = `SELECT _id, email, gender, created_at,updated_at FROM users WHERE email = ? AND password = ?`
-        return db.execute(query, [email, password])
-    }
 
     // signup user
     userSignUp(data) {
@@ -47,5 +41,9 @@ module.exports = class userModel {
         return db.execute(query, [id])
     }
 
+    getUsers() {
+        const query = `SELECT * FROM users`
+        return db.execute(query)
+    }
 
 }

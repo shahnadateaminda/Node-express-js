@@ -1,19 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const userCtrl = require('../controllers/userController')
 
+const authCtrl = require('../controllers/authController')
 /*  POST LOGIN */
-router.post('/login', userCtrl.login);
+router.post('/login', authCtrl.login);
 
 
 /* POST SIGNUP */
-router.post('/signup', userCtrl.signUp);
+router.post('/signup', authCtrl.signUp);
 
-// UPDATE USER
-router.put('/updateUser', userCtrl.updateUser)
 
-// DELETE USER
-router.delete('/deleteUser', userCtrl.deleteUser)
+/* POST SIGNUP */
+router.post('/logout', authCtrl.logout);
 
 
 
