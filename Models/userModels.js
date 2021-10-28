@@ -9,9 +9,9 @@ module.exports = class userModel {
 
     // signup user
     userSignUp(data) {
-        const { email, password, gender } = data
-        const query = `INSERT INTO users (email, password, gender, created_at, updated_at) VALUES (?,?,?,?,?)`
-        return db.execute(query, [email, password, gender, new Date(), new Date()])
+        const { email, password, gender, profile_pic } = data
+        const query = `INSERT INTO users (email, password,profile_pic, gender, created_at, updated_at) VALUES (?,?,?,?,?,?)`
+        return db.execute(query, [email, password, profile_pic, gender, new Date(), new Date()])
     }
 
     // update user
