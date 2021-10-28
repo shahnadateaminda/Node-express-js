@@ -38,7 +38,7 @@ exports.login = (req, res, next) => {
 exports.signUp = (req, res, next) => {
     const { email, password, gender } = req.body
     const imageFile = req.file || {}
-    const imagePath = `./images/${imageFile?.filename}`
+    const imagePath = `/images/${imageFile?.filename}`
     auth.findOne({ email: email }).then(([rows, fieldData]) => {
         if (rows.length) {
             res.status(404).send({ data: [], message: "Email is already exist. Please Try with another email" })
@@ -46,7 +46,7 @@ exports.signUp = (req, res, next) => {
             return bcrypt.hash(password, 12).then((hash) => {
                 user.userSignUp({ email, password: hash, gender, profile_pic: imagePath }).then(([resAray, fieldResData]) => {
                     res.status(200).send({
-                        message: 'User Created Successfully !', data: { email, password: hash, gender, profile_pic }, status: 200
+                        message: 'User Created Successfully !', data: { email, password: hash, gender, profile_pic: imagePath }, status: 200
                     })
                 }).catch((error) => {
                     res.status(500).send({ error: error, status: 500 })
