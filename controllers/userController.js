@@ -1,5 +1,6 @@
 const userModel = require('../Models/userModels');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 
 
 const user = new userModel()
@@ -11,7 +12,7 @@ exports.getUsers = (req, res, next) => {
             users: rows,
             total: rows?.length
         }
-        res.status(200).send({ data:data, status: 200, message: 'Users Listed Sucessfully' })
+        res.status(200).send({ data: data, status: 200, message: 'Users Listed Sucessfully' })
     }).catch((error) => {
         res.status(500).send({ error: error, status: 500 })
     })
@@ -61,6 +62,11 @@ exports.deleteUser = (req, res, next) => {
             if (rows?.length) {
                 user.deleteUser({ id: userId }).then(([resultData, fieldData]) => {
                     const result = { ...rows[0], password: '&^%(^&**()*^)*&%' }
+                    fs.unlink(result?.profile_pic, (err) => {
+                        if (err) {
+                            throw err
+                        }
+                    })
                     res.status(200).send({
                         data: result, message: 'User Deleted Successfully!',
                         status: 200
