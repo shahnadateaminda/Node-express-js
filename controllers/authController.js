@@ -32,7 +32,6 @@ exports.login = (req, res, next) => {
 
 }
 
-
 // signup
 exports.signUp = (req, res, next) => {
     const { email, password, gender } = req.body
