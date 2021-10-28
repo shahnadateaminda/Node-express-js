@@ -41,9 +41,15 @@ module.exports = class userModel {
         return db.execute(query, [id])
     }
 
-    getUsers() {
-        const query = `SELECT * FROM users`
+    getCountOfallUsers() {
+        const query = `SELECT COUNT(*) FROM users `
         return db.execute(query)
+    }
+
+    getUsers(params) {
+        const { page, limit } = params
+        const query = `SELECT * FROM users LIMIT ? OFFSET ?`
+        return db.execute(query, [limit, page])
     }
 
 }

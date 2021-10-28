@@ -6,18 +6,22 @@ const fs = require('fs');
 const user = new userModel()
 
 // GET USER
-exports.getUsers = (req, res, next) => {
-    user.getUsers().then(([rows]) => {
-        const data = {
-            users: rows,
-            total: rows?.length
-        }
+exports.getUsers = async (req, res, next) => {
+    const { page, limit } = req.query;
+    let data = {
+        users: [],
+        total: 0
+    }
+    await user.getCountOfallUsers().then(([rows]) => {
+        data = { ...data, total: rows[0]['COUNT(*)'] }
+    }).catch((err) => err)
+
+    user.getUsers({ page: page || '1', limit: limit || 10 }).then(([rows]) => {
+        data = { ...data, users: rows }
         res.status(200).send({ data: data, status: 200, message: 'Users Listed Sucessfully' })
     }).catch((error) => {
         res.status(500).send({ error: error, status: 500 })
     })
-
-
 }
 
 
