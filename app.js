@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
 const multer = require('multer');
-const bodyParser = require('body-parser')
+const session = require('express-session')
 
 const connection = require('./db/connection')
 const indexRouter = require('./routes/index');
@@ -24,14 +24,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/images",express.static(path.join(__dirname, 'images')));
-
+app.use("/images", express.static(path.join(__dirname, 'images')));
+app.use(session({
+  secret: 'My Secret Key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 const fileStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, './images')
   },
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
     // cb(null, file.fieldname + '-' + uniqueSuffix)
     cb(null, `${uniqueSuffix}-${file.originalname}`)

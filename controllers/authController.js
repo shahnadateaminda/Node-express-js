@@ -18,6 +18,8 @@ exports.login = (req, res, next) => {
                 .then((respose) => {
                     if (respose) {
                         const token = jwt.sign({ email }, 'my_secret_key', { expiresIn: '9h' })
+                        req.session.isLoggedIn = true
+                        req.session.userData = userData
                         res.status(200).send({ data: userData, message: 'Logged In Successfully', status: 200, token });
                     } else {
                         res.status(404).send({ error: 'Invalid Password' })
@@ -61,5 +63,6 @@ exports.signUp = (req, res, next) => {
 }
 
 exports.logout = (req, res, next) => {
+    req.session.destroy()
     res.status(200).send({ message: 'Logged Out Successfully !', status: 200 })
 }
